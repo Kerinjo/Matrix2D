@@ -35,6 +35,7 @@ namespace matrix
             return $"[[{_matrix[0, 0]}, {_matrix[0, 1]}]\n [{_matrix[1, 0]}, {_matrix[1, 1]}]]";
         }
 
+        // IEquatable implementation, comparison override
         public bool Equals(Matrix2D other)
         {
             for (int i = 0; i < 2; i++)
@@ -52,5 +53,55 @@ namespace matrix
 
         public override int GetHashCode() =>
             HashCode.Combine(_matrix[0, 0], _matrix[0, 1], _matrix[1, 0], _matrix[1, 1]);
+
+        // Arithmetic operators override
+        public static Matrix2D operator +(Matrix2D A, Matrix2D B)
+        {
+            return new Matrix2D(
+                A._matrix[0, 0] + B._matrix[0, 0],
+                A._matrix[0, 1] + B._matrix[0, 1],
+                A._matrix[1, 0] + B._matrix[1, 0],
+                A._matrix[1, 1] + B._matrix[1, 1]);
+        }
+
+        public static Matrix2D operator -(Matrix2D A, Matrix2D B)
+        {
+            return new Matrix2D(
+                A._matrix[0, 0] - B._matrix[0, 0],
+                A._matrix[0, 1] - B._matrix[0, 1],
+                A._matrix[1, 0] - B._matrix[1, 0],
+                A._matrix[1, 1] - B._matrix[1, 1]);
+        }
+
+        public static Matrix2D operator *(Matrix2D A, Matrix2D B)
+        {
+            int a = A._matrix[0, 0] * B._matrix[0, 0] + A._matrix[0, 1] * B._matrix[1, 0];
+            int b = A._matrix[0, 0] * B._matrix[0, 1] + A._matrix[0, 1] * B._matrix[1, 1];
+            int c = A._matrix[1, 0] * B._matrix[0, 0] + A._matrix[1, 1] * B._matrix[1, 0];
+            int d = A._matrix[1, 0] * B._matrix[0, 1] + A._matrix[1, 1] * B._matrix[1, 1];
+
+            return new Matrix2D(a, b, c, d);
+        }
+
+        public static Matrix2D operator *(int k, Matrix2D A)
+        {
+            return new Matrix2D(
+                k * A._matrix[0, 0], k * A._matrix[0, 1],
+                k * A._matrix[1, 0], k * A._matrix[1, 1]);
+        }
+
+        public static Matrix2D operator *(Matrix2D A, int k)
+        {
+            return new Matrix2D(
+                k * A._matrix[0, 0], k * A._matrix[0, 1],
+                k * A._matrix[1, 0], k * A._matrix[1, 1]);
+        }
+
+        public static Matrix2D operator -(Matrix2D A)
+        {
+            return new Matrix2D(
+                -A._matrix[0, 0], -A._matrix[0, 1],
+                -A._matrix[1, 0], -A._matrix[1, 1]);
+        }
     }
 }
