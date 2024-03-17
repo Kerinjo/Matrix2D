@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace matrix
+﻿namespace matrix
 {
-    internal class Matrix2D : IEquatable<Matrix2D>
+    public class Matrix2D : IEquatable<Matrix2D>
     {
         private readonly int[,] _matrix;
         public Matrix2D(int a, int b, int c, int d)
@@ -34,6 +28,8 @@ namespace matrix
         {
             return $"[[{_matrix[0, 0]}, {_matrix[0, 1]}]\n [{_matrix[1, 0]}, {_matrix[1, 1]}]]";
         }
+
+        public int GetElement(int row, int col) => _matrix[row, col];
 
         // IEquatable implementation, comparison override
         public bool Equals(Matrix2D other)
