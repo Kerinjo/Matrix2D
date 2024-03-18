@@ -1,4 +1,6 @@
-﻿namespace matrix
+﻿using System.Text.RegularExpressions;
+
+namespace matrix
 {
     public class Matrix2D : IEquatable<Matrix2D>
     {
@@ -98,6 +100,51 @@
             return new Matrix2D(
                 -A._matrix[0, 0], -A._matrix[0, 1],
                 -A._matrix[1, 0], -A._matrix[1, 1]);
+        }
+
+        // Some basic instance and class methods
+        public static Matrix2D Transpose(Matrix2D A)
+        {
+            int a = A._matrix[0, 0];
+            int b = A._matrix[1, 0];
+            int c = A._matrix[0, 1];
+            int d = A._matrix[1, 1];
+
+            return new Matrix2D(a, b, c, d);
+        }
+
+        public static int Determinant(Matrix2D A) =>
+            A._matrix[0, 0] * A._matrix[1, 1] - (A._matrix[0, 1] * A._matrix[1, 0]);
+
+        public int Det() =>
+            _matrix[0, 0] * _matrix[1, 1] - (_matrix[0, 1] * _matrix[1, 0]);
+
+        // Conversion
+        public static explicit operator int[,](Matrix2D matrix)
+        {
+            int[,] result = new int[2, 2];
+            result[0, 0] = matrix._matrix[0, 0];
+            result[0, 1] = matrix._matrix[0, 1];
+            result[1, 0] = matrix._matrix[1, 0];
+            result[1, 1] = matrix._matrix[1, 1];
+
+            return result;
+        }
+
+        // Parse from string
+        public static Matrix2D Parse(string text)
+        {
+            string pattern = @"\[\[-?\d+\s*,\s*-?\d+\],\s*\[-?\d+\s*,\s*-?\d+\]\]";
+            if (!Regex.IsMatch(text, pattern))
+                throw new FormatException("Wrong format");
+
+            MatchCollection matches = Regex.Matches(text, @"-?\d+");
+
+            Matrix2D matrix = new Matrix2D(
+                int.Parse(matches[0].Value), int.Parse(matches[1].Value),
+                int.Parse(matches[2].Value), int.Parse(matches[3].Value));
+
+            return matrix;
         }
     }
 }
